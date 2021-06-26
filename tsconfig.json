@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "strict": true ,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "esModuleInterop": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "skipLibCheck": true,
+    "strictPropertyInitialization": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "types": ["jest"],
+    "paths": {
+      "@shared/*": [
+        "shared/*"
+      ]
+    },
+    "jsx": "react"
+  },
+  "include": [
+    "./.eslintrc.js",
+    "./jest.config.js",
+    "tooling",
+    "client",
+    "electron",
+    "shared",
+    "e2e"
+  ],
+  "exclude": ["node_modules"]
+}
