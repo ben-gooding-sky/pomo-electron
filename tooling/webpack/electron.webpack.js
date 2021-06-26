@@ -41,7 +41,7 @@ const common = {
   },
 };
 
-const main = {
+module.exports = {
   ...common,
   entry: path.resolve(rootPath, 'electron', 'main.ts'),
   output: {
@@ -49,15 +49,3 @@ const main = {
     filename: '[name].js',
   },
 };
-
-const preload = {
-  ...common,
-  devtool: false,
-  entry: path.resolve(rootPath, 'electron', 'preload.ts'),
-  output: {
-    path: path.resolve(rootPath, 'build'),
-    filename: 'preload.js',
-  },
-};
-
-module.exports = [main, preload];

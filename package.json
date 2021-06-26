@@ -85,8 +85,8 @@
     "styled-components": "5.2.1"
   },
   "build": {
-    "appId": "com.electron.pancake",
-    "productName": "Pancake",
+    "appId": "com.electron.pomo",
+    "productName": "Pomo",
     "afterSign": "electron-builder-notarize",
     "linux": {
       "category": "Utility"

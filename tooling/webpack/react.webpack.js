@@ -13,7 +13,7 @@ module.exports = (_, options = {}) => ({
     },
   },
   entry: path.resolve(rootPath, 'client', 'App.tsx'),
-  target: 'web',
+  target: 'electron-renderer',
   devtool: 'source-map',
   module: {
     rules: [

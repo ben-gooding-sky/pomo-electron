@@ -1,13 +1,25 @@
-# Pancake
-The Github Pull Request Dashboard
+# Pomo 🍅
+Simple Pomodoro timer
+
+Mainly building as a learning exercise to use [fp-ts](https://gcanti.github.io/fp-ts/)
+
+Also turning off all electron safety settings so use at own risk.
 
 ## Usage
 
 pending...
 
+Some plans are:
+electron based to run on OS in background, should support an api to be queried by editors, e.g
+- tmux
+- emacs
+- intelij
+
+could just write meta data to a file (e.g next end time, time left), or expose a REST api 
+
 ## Contributing
 
-Pancake is an [electron](https://www.electronjs.org/) app built using:
+Pomo is an [electron](https://www.electronjs.org/) app built using:
 - [Typescript](https://www.typescriptlang.org/) throughout (with very strict settings)
 - [React](https://reactjs.org/) for the GUI
 - [Storybook](https://storybook.js.org/docs/react/get-started/introduction) for building components and User documentation
