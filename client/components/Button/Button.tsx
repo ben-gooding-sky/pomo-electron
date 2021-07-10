@@ -1,4 +1,5 @@
 import React from 'react';
+import { logger } from '@electron/services/logger';
 
 export interface IButton {
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
@@ -15,7 +16,7 @@ export const Button: React.FC<IButton> = ({
     onClick={
       onClick ??
       (() => {
-        window.bridge.test();
+        logger.info('hello from client');
       })
     }
   >

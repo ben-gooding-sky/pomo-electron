@@ -1,32 +1,37 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { app, BrowserWindow } from 'electron';
-import {
-  logger,
-  checkForUpdates,
-  setUpDevtools,
-  setupIpcHandlers,
-} from './services';
-import { createWindow } from './createWindow';
-
-let mainWindow: BrowserWindow | null;
+import { menubar } from 'menubar';
+import { isDev } from '@shared/constants';
+import url from 'url';
+import path from 'path';
+import { checkForUpdates, logger, setUpDevtools } from '@electron/services';
 
 checkForUpdates(logger);
 
-app
-  .on('ready', () => {
-    mainWindow = createWindow(logger);
+const mb = menubar({
+  index: getPage(),
+  preloadWindow: true,
+  browserWindow: {
+    backgroundColor: '#191622',
+    webPreferences: {
+      nodeIntegration: true,
+    },
+    alwaysOnTop: true,
+  },
+  showDockIcon: false,
+  ...(isDev && { windowPosition: 'topLeft' }),
+});
 
-    mainWindow.on('closed', closeWindow);
-  })
-  .whenReady()
-  .then(setupIpcHandlers)
-  .then(setUpDevtools(logger))
-  .catch(logger.errorWithContext('main window creation'));
+mb.on('ready', () => {
+  logger.info('app ready');
+  setUpDevtools(logger);
+});
 
-app.allowRendererProcessReuse = false;
-
-function closeWindow(): void {
-  mainWindow = null;
-  logger.info('User closed window');
-  app.quit();
+function getPage(): string {
+  return isDev
+    ? 'http://localhost:4000'
+    : url.format({
+        pathname: path.join(__dirname, 'renderer/index.html'),
+        protocol: 'file:',
+        slashes: true,
+      });
 }
