@@ -15,12 +15,10 @@
     "baseUrl": ".",
     "types": ["jest"],
     "paths": {
-      "@shared/*": [
-        "shared/*"
-      ],
-      "@electron/*": [
-	"electron/*"
-      ]
+      "@shared/*": [ "shared/*" ],
+      "@electron/*": [ "electron/*" ],
+      "@client/*": [ "client/*" ],
+      "@test/*": [ "testHelpers/*" ]
     },
     "jsx": "react"
   },
@@ -31,6 +29,7 @@
     "client",
     "electron",
     "shared",
+    "testHelpers",
     "e2e"
   ],
   "exclude": ["node_modules"]

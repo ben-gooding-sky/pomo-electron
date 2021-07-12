@@ -1,32 +1,24 @@
-import React, { FC } from 'react';
-import { render } from 'react-dom';
-import { logger } from '@electron/services/logger';
+import React, { FC, useEffect, useLayoutEffect, useState } from 'react';
+import { Meta, Story } from '@storybook/react/types-6-0';
+import { Inspector } from '@client/components';
 import { useMachine } from '@client/machines';
-import {
-  AppContext,
-  appMachine,
-  AppSend,
-  AppState,
-  defaultAppSettings,
-} from '@client/machines/app/appMachine';
-import { appOptions } from '@client/machines/app/appOptions';
-import axios from 'axios';
-import { defaultTimerContext, timerMachine } from '@client/machines/timer/timerMachine';
+// import { formOptions } from '@client/machines/form/formOptions';
+import { defaultTimerContext, timerMachine, TimerSend } from '@client/machines/timer/timerMachine';
 import { timerOptions } from '@client/machines/timer/timerOptions';
-import { ipcRenderer } from '@electron/electron';
-import { GlobalStyle } from './styles/GlobalStyle';
+import axios from 'axios';
+import { appOptions } from './appOptions';
 
-// import Greetings from './components/Greetings';
+import { AppContext, appMachine, AppSend, AppState, defaultAppSettings } from './appMachine';
 
-const mainElement = document.createElement('div');
-mainElement.setAttribute('id', 'root');
-document.body.appendChild(mainElement);
-
-logger.info('client loaded');
+export default {
+  title: 'Machines/App',
+} as Meta;
 
 const appContext: AppContext = {
   ...defaultAppSettings,
 };
+
+type Dispatch = React.Dispatch<React.SetStateAction<TimerSend | undefined>>;
 
 const AppMachine: FC = () => {
   const [state, send] = useMachine(appMachine, {
@@ -35,8 +27,25 @@ const AppMachine: FC = () => {
     ...appOptions({
       actions: {
         runStartHooks: () => {
-          console.log('ipc called');
-          ipcRenderer.send('slack');
+          axios
+            .post(
+              'https://sky.slack.com/api/users.profile.set',
+              {
+                profile: {
+                  status_text: 'riding a train',
+                  status_emoji: ':mountain_railway:',
+                  status_expiration: new Date().getTime(),
+                },
+              },
+              {
+                headers: {
+                  authorization: 'Bearer 33',
+                },
+              }
+            )
+            .catch((err) => {
+              console.error(err);
+            });
         },
         runEndHooks: () => {},
       },
@@ -131,12 +140,9 @@ const Timer: FC<{
   );
 };
 
-const App: FC = () => (
+export const App: Story = () => (
   <>
-    <GlobalStyle />
+    <Inspector />
     <AppMachine />
   </>
 );
-
-// logger.info('Client loaded');
-render(<App />, mainElement);

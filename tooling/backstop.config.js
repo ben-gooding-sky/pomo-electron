@@ -12,10 +12,7 @@ module.exports = {
       height: 768,
     },
   ],
-  scenarios: [
-    scenario('atoms-button--primary'),
-    scenario('atoms-button--secondary'),
-  ],
+  scenarios: [scenario('atoms-button--primary'), scenario('atoms-button--secondary')],
   paths: {
     bitmaps_reference: 'tooling/backstop_data/bitmaps_reference',
     bitmaps_test: 'tooling/backstop_data/bitmaps_test',
