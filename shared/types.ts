@@ -1,19 +1,27 @@
 import { ElectronLog } from 'electron-log';
-import { Result } from '@shared/Result';
 import { IpcMainEvent, IpcMainInvokeEvent } from '@electron/electron';
+import { Repositories } from '@electron/repositories';
 
 export interface ILogger extends ElectronLog {
   errorWithContext(context: string): (err: Error | string) => void;
+
   info(...msg: string[]): void;
+
   error(...msg: string[]): void;
 }
 
 export type IClientLogger = Pick<ILogger, 'error' | 'info'>;
 
-export interface UserConfig {
-  slackToken?: string;
-  filters: [];
+export type UserConfig = EmptyConfig | FullUserConfig;
+
+interface FullUserConfig {
+  slackToken: string;
+  slackDCookie: string;
+  slackDSCookie: string;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface EmptyConfig {}
 
 /**
  * IpcBridge is a meta type to glue together the client and server through the bridge.
@@ -22,7 +30,7 @@ export interface UserConfig {
  *
  * See the derived types below
  */
-interface IpcBridge {
+type IpcBridge = Repostuff & {
   info: {
     param: Parameters<ILogger['info']>;
     response: ReturnType<ILogger['info']>;
@@ -32,32 +40,14 @@ interface IpcBridge {
     param: Parameters<ILogger['error']>;
     response: ReturnType<ILogger['error']>;
   };
+};
 
-  test: {
-    param: string[];
-    response: void;
+type Repostuff = {
+  [key in keyof Repositories]: {
+    param: Parameters<Repositories[key]>;
+    response: ReturnType<Repositories[key]>;
   };
-
-  openGithubForTokenSetup: {
-    param: never[];
-    response: void;
-  };
-
-  loadUserConfig: {
-    param: never[];
-    response: Promise<Result<UserConfig>>;
-  };
-
-  resetUserConfig: {
-    param: never[];
-    response: Promise<Result<UserConfig>>;
-  };
-
-  updateUserConfig: {
-    param: [userConfig: DeepPartial<UserConfig>];
-    response: Promise<Result<UserConfig>>;
-  };
-}
+};
 
 export type IBridge = {
   [key in keyof IpcBridge]: (...args: IpcBridge[key]['param']) => IpcBridge[key]['response'];
@@ -91,26 +81,3 @@ export type Partial2Deep<T> = {
 export type DeepPartial<T> = {
   [P in keyof T]?: DeepPartial<T[P]>;
 };
-
-// interface None<A> {
-//   map: <B>(f: (m: A) => B) => None<A>;
-//   get: (fallback: A) => A;
-// }
-//
-// interface Some<A> {
-//   map: <B>(f: (m: A) => B) => Some<B>;
-//   get: (fallback: A) => A;
-// }
-//
-// export function some<A>(val: A): Some<A> {
-//   return {
-//     get: () => val,
-//     map: (fn) => some(fn(val)),
-//   };
-// }
-//
-// type Maybe<A> = None<A> | Some<A>;
-
-// export interface AnyObject {
-//   [key: string]: any;
-// }

@@ -1,1 +1,0 @@
-export { setupIpcHandlers } from './ipc';

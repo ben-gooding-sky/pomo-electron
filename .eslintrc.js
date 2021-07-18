@@ -59,6 +59,7 @@ module.exports = {
         'plugin:prettier/recommended',
       ],
       rules: {
+        '@typescript-eslint/no-floating-promises': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
         '@typescript-eslint/no-unused-params': 'off',
         '@typescript-eslint/no-use-before-define': 'off',
@@ -90,7 +91,6 @@ module.exports = {
         '@typescript-eslint/prefer-optional-chain': 'error',
         '@typescript-eslint/prefer-readonly': 'error',
         // '@typescript-eslint/prefer-readonly-parameter-types': 'error', // nice rule but issue around FB children, fix later
-        '@typescript-eslint/prefer-reduce-type-parameter': 'error',
         '@typescript-eslint/prefer-ts-expect-error': 'error',
         '@typescript-eslint/promise-function-async': 'error',
         '@typescript-eslint/sort-type-union-intersection-members': 'error',

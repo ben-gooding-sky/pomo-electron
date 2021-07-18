@@ -1,11 +1,12 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { menubar } from 'menubar';
-import { isDev } from '@shared/constants';
+import { isDev, isIntegration } from '@shared/constants';
 import url from 'url';
 import path from 'path';
 import { checkForUpdates, logger, setUpDevtools } from '@electron/services';
 import { ipcMain } from '@electron/electron';
-import axios from 'axios';
+import { fakeRepositories, productionRepositories } from '@electron/repositories';
+import { handlers, setupIpcHandlers } from '@electron/ipc';
 
 checkForUpdates(logger);
 
@@ -23,35 +24,14 @@ const mb = menubar({
   // ...(isDev && { windowPosition: 'topLeft' }),
 });
 
+const repos = isIntegration ? fakeRepositories() : productionRepositories();
+
 mb.on('ready', () => {
   logger.info('app ready');
   setUpDevtools(logger);
 
-  ipcMain.on('slack', () => {
-    console.log('res');
-    axios
-      .post(
-        'https://sky.slack.com/api/users.profile.set',
-        {
-          profile: {
-            status_text: 'riding a train',
-            status_emoji: ':mountain_railway:',
-            status_expiration: new Date().getTime(),
-          },
-        },
-        {
-          headers: {
-            authorization: `Bearer ${process.env.SLACK_SKY_EMACS_TOKEN}`,
-          },
-        }
-      )
-      .then((res) => {
-        logger.info('res', res.status.toString(), res.statusText, res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  });
+  setupIpcHandlers(ipcMain, handlers(repos));
+
   // setInterval(() => {
   //   const [width, height] = mb.window?.getContentSize() ?? [0, 0];
   //   mb.window?.setContentSize(width, height > 500 ? 300 : 700, true);

@@ -10,10 +10,11 @@ import {
   defaultAppSettings,
 } from '@client/machines/app/appMachine';
 import { appOptions } from '@client/machines/app/appOptions';
-import axios from 'axios';
 import { defaultTimerContext, timerMachine } from '@client/machines/timer/timerMachine';
 import { timerOptions } from '@client/machines/timer/timerOptions';
 import { ipcRenderer } from '@electron/electron';
+import { bridgeCreator } from '@electron/ipc/bridgeCreator';
+import { SlackAuth } from '@electron/repositories/slack/slack';
 import { GlobalStyle } from './styles/GlobalStyle';
 
 // import Greetings from './components/Greetings';
@@ -23,6 +24,8 @@ mainElement.setAttribute('id', 'root');
 document.body.appendChild(mainElement);
 
 logger.info('client loaded');
+
+window.bridge = bridgeCreator(ipcRenderer);
 
 const appContext: AppContext = {
   ...defaultAppSettings,
@@ -35,10 +38,37 @@ const AppMachine: FC = () => {
     ...appOptions({
       actions: {
         runStartHooks: () => {
-          console.log('ipc called');
-          ipcRenderer.send('slack');
+          logger.info('start hooks called');
+          const slackAuth: SlackAuth = {
+            token: process.env.SLACK_SKY_EMACS_TOKEN,
+            dCookie: process.env.SLACK_D_COOKIE,
+            dSCookie: process.env.SLACK_D_S_COOKIE,
+          };
+
+          const duration = 25;
+
+          const expiration = new Date();
+          expiration.setMinutes(expiration.getMinutes() + duration);
+
+          Promise.all([
+            window.bridge.slackSetPresence(slackAuth, 'away'),
+            window.bridge.slackSetSnooze(slackAuth, duration),
+            window.bridge.slackSetProfile(slackAuth, {
+              text: 'free in 25 mins',
+              emoji: ':tomato:',
+              expiration,
+            }),
+          ]);
         },
-        runEndHooks: () => {},
+        runEndHooks: () => {
+          logger.info('end hooks called');
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
+          // window.bridge.slackStopPomodoro({
+          //   token: process.env.SLACK_SKY_EMACS_TOKEN,
+          //   dCookie: process.env.SLACK_D_COOKIE,
+          //   dSCookie: process.env.SLACK_D_S_COOKIE,
+          // });
+        },
       },
     }),
   });

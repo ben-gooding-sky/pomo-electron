@@ -8,7 +8,7 @@ export let loggerErrorHandler: ReturnType<typeof errorHandler>;
 
 export interface ILogger extends ElectronLog {
   errorWithContext(context: string): (err: Error) => void;
-  info(...msg: string[]): void;
+  info(...msg: any[]): void;
 }
 
 type LogLevels = [Nodenv, LevelOption][];
@@ -50,6 +50,9 @@ export function createLogger(log: ElectronLog): ILogger {
   logger.info(
     'Logger initialised',
     JSON.stringify({
+      node: process.version,
+      chrome: process.versions.chrome,
+      electron: process.versions.electron,
       env: nodenv,
       integration: isIntegration,
       file: log.transports.file.level,

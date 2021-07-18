@@ -2,7 +2,7 @@ FROM node:12-slim
 
 WORKDIR /app
 
-RUN apt-get update && \
+RUN apt-get storeUpdate && \
     apt-get install -y xvfb \
                     libgbm1 \
                     libxss1 \
