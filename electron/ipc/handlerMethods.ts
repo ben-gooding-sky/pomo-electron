@@ -1,8 +1,6 @@
 import { IpcSetup } from '@shared/types';
 
 export const handlerMethods: IpcSetup = {
-  info: { main: 'on', renderer: 'send' },
-  error: { main: 'on', renderer: 'send' },
   openExternal: { main: 'on', renderer: 'send' },
   storeRead: { main: 'handle', renderer: 'invoke' },
   storeReset: { main: 'handle', renderer: 'invoke' },

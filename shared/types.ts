@@ -30,19 +30,7 @@ interface EmptyConfig {}
  *
  * See the derived types below
  */
-type IpcBridge = Repostuff & {
-  info: {
-    param: Parameters<ILogger['info']>;
-    response: ReturnType<ILogger['info']>;
-  };
-
-  error: {
-    param: Parameters<ILogger['error']>;
-    response: ReturnType<ILogger['error']>;
-  };
-};
-
-type Repostuff = {
+type IpcBridge = {
   [key in keyof Repositories]: {
     param: Parameters<Repositories[key]>;
     response: ReturnType<Repositories[key]>;
@@ -81,3 +69,7 @@ export type Partial2Deep<T> = {
 export type DeepPartial<T> = {
   [P in keyof T]?: DeepPartial<T[P]>;
 };
+
+export interface AnyObject {
+  [key: string]: any;
+}
