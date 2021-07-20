@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { createMachine, StateWithMatches } from '@xstate/compiled';
+import { createMachine, sendParent, StateWithMatches } from '@xstate/compiled';
 
-import { Actor, ActorRef } from 'xstate';
+import { ActorRef, assign } from 'xstate';
 import { MachineOptions, MachineSend } from '../utils';
 
 export interface TimerContext {
@@ -19,13 +19,29 @@ export const defaultTimerContext: TimerContext = {
   timeLeft: { mins: 0, seconds: 0 },
 };
 
-type TimerEvent = { type: 'PAUSE' } | { type: 'PLAY' } | { type: 'STOP' };
+export type TimerEvent = { type: 'PAUSE' } | { type: 'PLAY' } | { type: 'STOP' };
+
+export type TimerParentEvents =
+  | {
+      type: 'COMPLETED';
+    }
+  | {
+      type: 'PAUSED';
+    }
+  | {
+      type: 'STARTED';
+    }
+  | {
+      type: 'TICK';
+      timeLeft: { mins: number; seconds: number };
+    };
+
+const e = (event: TimerParentEvents): TimerParentEvents => event;
 
 export type TimerOptions = MachineOptions<TimerContext, TimerEvent, 'timer'>;
-export type TimerState = StateWithMatches<TimerContext, TimerEvent, 'timer'>;
-export type TimerActor = Actor<TimerContext, TimerEvent>;
-export type TimerActorRef = ActorRef<TimerEvent>;
+export type TimerActorRef = ActorRef<TimerEvent, TimerParentEvents>;
 export type TimerSend = MachineSend<TimerContext, TimerEvent, 'timer'>;
+export type TimerState = StateWithMatches<TimerContext, TimerEvent, 'timer'>;
 
 export const timerMachine = createMachine<TimerContext, TimerEvent, 'timer'>({
   id: 'timerMachine',
@@ -40,41 +56,52 @@ export const timerMachine = createMachine<TimerContext, TimerEvent, 'timer'>({
   initial: 'initial',
   states: {
     initial: {
-      onEntry: 'resetTimer',
+      // reset timer
+      onEntry: assign({
+        timeLeft: ({ duration }) => ({ mins: duration, seconds: 0 }),
+      }),
+      onExit: sendParent(e({ type: 'STARTED' })),
       on: {
-        PLAY: 'counting',
+        PLAY: 'tickStart',
       },
       always: {
         cond: ({ autoStart }) => autoStart,
-        target: 'counting',
+        target: 'tickStart',
       },
     },
-    counting: {
+    tickStart: {
+      always: {
+        cond: ({ timeLeft: { mins, seconds } }) => mins === 0 && seconds === 0,
+        target: 'complete',
+      },
       on: {
         PAUSE: 'paused',
         STOP: 'initial',
       },
       after: {
-        ONE_SECOND: [
-          {
-            cond: 'isComplete',
-            target: 'complete',
-          },
-          {
-            actions: 'decrement1Second',
-            target: 'counting',
-          },
-        ],
+        ONE_SECOND: 'tickEnd',
+      },
+    },
+    tickEnd: {
+      // decrement by 1 second
+      onEntry: assign({
+        timeLeft: ({ timeLeft: { mins, seconds } }) =>
+          seconds === 0 ? { mins: mins - 1, seconds: 59 } : { mins, seconds: seconds - 1 },
+      }),
+      onExit: sendParent(({ timeLeft }) => e({ type: 'TICK', timeLeft })),
+      always: {
+        target: 'tickStart',
       },
     },
     paused: {
+      onEntry: sendParent(e({ type: 'PAUSED' })),
       on: {
-        PLAY: 'counting',
+        PLAY: 'tickStart',
         STOP: 'initial',
       },
     },
     complete: {
-      onEntry: ['decrement1Second', 'completed'],
+      onEntry: sendParent(e({ type: 'COMPLETED' })),
       type: 'final',
     },
   },

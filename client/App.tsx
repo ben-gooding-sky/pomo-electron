@@ -37,38 +37,38 @@ const AppMachine: FC = () => {
     context: appContext,
     ...appOptions({
       actions: {
-        runStartHooks: () => {
-          logger.info('start hooks called');
-          const slackAuth: SlackAuth = {
-            token: process.env.SLACK_SKY_EMACS_TOKEN,
-            dCookie: process.env.SLACK_D_COOKIE,
-            dSCookie: process.env.SLACK_D_S_COOKIE,
-          };
-
-          const duration = 25;
-
-          const expiration = new Date();
-          expiration.setMinutes(expiration.getMinutes() + duration);
-
-          Promise.all([
-            window.bridge.slackSetPresence(slackAuth, 'away'),
-            window.bridge.slackSetSnooze(slackAuth, duration),
-            window.bridge.slackSetProfile(slackAuth, {
-              text: 'free in 25 mins',
-              emoji: ':tomato:',
-              expiration,
-            }),
-          ]);
-        },
-        runEndHooks: () => {
-          logger.info('end hooks called');
-          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          // window.bridge.slackStopPomodoro({
-          //   token: process.env.SLACK_SKY_EMACS_TOKEN,
-          //   dCookie: process.env.SLACK_D_COOKIE,
-          //   dSCookie: process.env.SLACK_D_S_COOKIE,
-          // });
-        },
+        // runStartHooks: () => {
+        //   logger.info('start hooks called');
+        //   const slackAuth: SlackAuth = {
+        //     token: process.env.SLACK_SKY_EMACS_TOKEN,
+        //     dCookie: process.env.SLACK_D_COOKIE,
+        //     dSCookie: process.env.SLACK_D_S_COOKIE,
+        //   };
+        //
+        //   const duration = 25;
+        //
+        //   const expiration = new Date();
+        //   expiration.setMinutes(expiration.getMinutes() + duration);
+        //
+        //   Promise.all([
+        //     window.bridge.slackSetPresence(slackAuth, 'away'),
+        //     window.bridge.slackSetSnooze(slackAuth, duration),
+        //     window.bridge.slackSetProfile(slackAuth, {
+        //       text: 'free in 25 mins',
+        //       emoji: ':tomato:',
+        //       expiration,
+        //     }),
+        //   ]);
+        // },
+        // runEndHooks: () => {
+        //   logger.info('end hooks called');
+        //   // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        //   // window.bridge.slackStopPomodoro({
+        //   //   token: process.env.SLACK_SKY_EMACS_TOKEN,
+        //   //   dCookie: process.env.SLACK_D_COOKIE,
+        //   //   dSCookie: process.env.SLACK_D_S_COOKIE,
+        //   // });
+        // },
       },
     }),
   });

@@ -38,7 +38,7 @@ export const InspectorComponent: FC<IInspector> = ({ toggleable }) => {
         data-xstate
         style={{
           display: inspecting ? 'block' : 'none',
-          height: '95vh',
+          height: '65vh',
           width: '100%',
         }}
       />

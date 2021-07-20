@@ -3,22 +3,35 @@ import { Meta, Story } from '@storybook/react/types-6-0';
 import { Inspector } from '@client/components';
 import { useMachine } from '@client/machines';
 // import { formOptions } from '@client/machines/form/formOptions';
+import { action } from '@storybook/addon-actions';
 import { timerOptions } from './timerOptions';
 
 import { defaultTimerContext, timerMachine } from './timerMachine';
 
 export default {
   title: 'Machines/Timer',
+  args: {
+    secondDuration: 1000,
+  },
 } as Meta;
 
-const TimerMachine: FC = () => {
+const TimerMachine: FC<{ oneSecond: number }> = ({ oneSecond }) => {
   const [state, send] = useMachine(timerMachine, {
     devTools: true,
     context: defaultTimerContext,
     ...timerOptions({
+      delays: {
+        ONE_SECOND: oneSecond,
+      },
       actions: {
-        completed: () => {
-          alert('complete!');
+        hookStart: () => {
+          action('timer started')();
+        },
+        hookCountTick: ({ timeLeft }) => {
+          action(`count left: ${timeLeft.mins}:${timeLeft.seconds}`)();
+        },
+        hookCompleted: () => {
+          action('timer complete')();
         },
       },
     }),
@@ -26,7 +39,6 @@ const TimerMachine: FC = () => {
 
   return (
     <div style={{ color: 'white' }}>
-      {state.value}
       {state.matches('initial') && (
         <button type="button" onClick={() => send({ type: 'PLAY' })}>
           start
@@ -37,7 +49,7 @@ const TimerMachine: FC = () => {
           stop
         </button>
       )}
-      {state.matches('counting') && (
+      {state.matches('tickStart') && (
         <button type="button" onClick={() => send({ type: 'PAUSE' })}>
           pause
         </button>
@@ -73,9 +85,9 @@ const TimerMachine: FC = () => {
   );
 };
 
-export const Timer: Story = () => (
+export const Timer: Story<{ oneSecond: number }> = ({ oneSecond }) => (
   <>
     <Inspector />
-    <TimerMachine />
+    <TimerMachine oneSecond={oneSecond} />
   </>
 );

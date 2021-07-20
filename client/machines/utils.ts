@@ -1,6 +1,6 @@
 import { EventObject } from 'xstate';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { RegisteredMachine, InterpreterWithMatches } from '@xstate/compiled';
+import { InterpreterWithMatches, RegisteredMachine } from '@xstate/compiled';
 // eslint-disable-next-line import/no-extraneous-dependencies
 export { useMachine, useService } from '@xstate/compiled/react';
 
@@ -25,7 +25,7 @@ export type MachineOptions<TContext, TEvent extends EventObject, Id extends stri
 export type MachineSend<
   TContext,
   TEvent extends EventObject,
-  Id extends string
+  Id extends 'app' | 'timer'
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 > = InterpreterWithMatches<TContext, any, TEvent, Id>['send'];
 
