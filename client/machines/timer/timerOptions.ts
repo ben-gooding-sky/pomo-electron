@@ -1,5 +1,4 @@
 import { assign } from 'xstate';
-import { Partial2Deep } from '@shared/types';
 import merge from 'lodash.merge';
 import { TimerOptions } from './timerMachine';
 
@@ -8,6 +7,7 @@ const timerOptionsDefaults: TimerOptions = {
     isComplete: ({ timeLeft: { mins, seconds } }) => mins === 0 && seconds === 1,
   },
   actions: {
+    tickEvent: () => {},
     resetTimer: assign({
       timeLeft: ({ duration }) => ({ mins: duration, seconds: 0 }),
     }),
@@ -18,9 +18,18 @@ const timerOptionsDefaults: TimerOptions = {
     completed: () => {},
   },
   delays: {
-    ONE_SECOND: 1000,
+    // ONE_SECOND: 1000,
+  },
+  services: {
+    count1Second() {},
   },
 };
 
-export const timerOptions = (overrides?: Partial2Deep<TimerOptions>): TimerOptions =>
+interface Overrides {
+  actions?: Pick<TimerOptions['actions'], 'completed' | 'tickEvent'>;
+  delays?: TimerOptions['delays'];
+  services?: TimerOptions['services'];
+}
+
+export const timerOptions = (overrides?: Overrides): TimerOptions =>
   merge({}, timerOptionsDefaults, overrides);

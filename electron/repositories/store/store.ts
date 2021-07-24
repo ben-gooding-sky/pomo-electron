@@ -1,7 +1,7 @@
 import Store from 'electron-store';
 import { err, ok, Result } from '@shared/Result';
 import { logger } from '@electron/services';
-import { DeepPartial } from '@shared/types';
+import { DeepPartial, UserConfig } from '@shared/types';
 import { getKeyPathsAndValues } from './getKeyPathsAndValues';
 
 export interface StoreRepository<T> {
@@ -27,7 +27,9 @@ export interface StoreConfig<T> {
   defaults: T;
 }
 
-export const storeRepository = <T>(storeConfig: StoreConfig<T>): StoreRepository<T> => {
+export const storeRepository = <T = UserConfig>(
+  storeConfig: StoreConfig<T>
+): StoreRepository<T> => {
   const { name, cwd } = storeConfig;
 
   /* istanbul ignore next */
@@ -36,6 +38,7 @@ export const storeRepository = <T>(storeConfig: StoreConfig<T>): StoreRepository
   const store = new Store<T>(storeConfig);
   return {
     storeRead() {
+      logger.info('reading store', store.store);
       return ok(store.store);
     },
     storeReset() {

@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { menubar } from 'menubar';
+import { globalShortcut, Menu, nativeImage } from 'electron';
+import { Menubar, menubar } from 'menubar';
 import { isDev, isIntegration } from '@shared/constants';
 import url from 'url';
 import path from 'path';
@@ -7,7 +8,6 @@ import { checkForUpdates, logger, setUpDevtools } from '@electron/services';
 import { ipcMain } from '@electron/electron';
 import { fakeRepositories, productionRepositories } from '@electron/repositories';
 import { handlers, setupIpcHandlers } from '@electron/ipc';
-import { globalShortcut, Menu } from 'electron';
 
 checkForUpdates(logger);
 
@@ -25,28 +25,31 @@ const mb = menubar({
   // ...(isDev && { windowPosition: 'topLeft' }),
 });
 
-const repos = isIntegration ? fakeRepositories() : productionRepositories();
+const repos = isIntegration ? fakeRepositories() : productionRepositories(mb);
+setupIpcHandlers(ipcMain, handlers(repos));
+
+const trayIcon = nativeImage.createFromPath('assets/IconTemplate.png');
 
 mb.on('ready', () => {
   logger.info('app ready');
 
+  mb.tray.setImage(trayIcon);
+
   setUpDevtools(logger);
 
-  setupIpcHandlers(ipcMain, handlers(repos));
-
-  const menu = Menu.buildFromTemplate([
-    {
-      label: 'File',
-      submenu: [
-        {
-          label: 'Quit',
-          accelerator: 'CommandOrControl+Q',
-          role: 'quit',
-        },
-      ],
-    },
-  ]);
-  Menu.setApplicationMenu(menu);
+  // const menu = Menu.buildFromTemplate([
+  //   {
+  //     label: 'File',
+  //     submenu: [
+  //       {
+  //         label: 'Quit',
+  //         accelerator: 'CommandOrControl+Q',
+  //         role: 'quit',
+  //       },
+  //     ],
+  //   },
+  // ]);
+  // Menu.setApplicationMenu(menu);
 
   globalShortcut.register('Ctrl+Alt+P', () => {
     // more https://stackoverflow.com/questions/50642126/previous-window-focus-electron if windows and linux don't play ball

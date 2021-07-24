@@ -1,8 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { createMachine, StateWithMatches } from '@xstate/compiled';
-
-import { Actor, ActorRef } from 'xstate';
-import { MachineOptions, MachineSend } from '../utils';
+import { createMachine } from '@xstate/compiled';
+import { MachineOptions } from '../utils';
 
 export interface TimerContext {
   duration: number;
@@ -22,21 +20,10 @@ export const defaultTimerContext: TimerContext = {
 type TimerEvent = { type: 'PAUSE' } | { type: 'PLAY' } | { type: 'STOP' };
 
 export type TimerOptions = MachineOptions<TimerContext, TimerEvent, 'timer'>;
-export type TimerState = StateWithMatches<TimerContext, TimerEvent, 'timer'>;
-export type TimerActor = Actor<TimerContext, TimerEvent>;
-export type TimerActorRef = ActorRef<TimerEvent>;
-export type TimerSend = MachineSend<TimerContext, TimerEvent, 'timer'>;
 
 export const timerMachine = createMachine<TimerContext, TimerEvent, 'timer'>({
   id: 'timerMachine',
-  context: {
-    autoStart: false,
-    duration: 1,
-    timeLeft: {
-      mins: 25,
-      seconds: 0,
-    },
-  },
+  context: defaultTimerContext,
   initial: 'initial',
   states: {
     initial: {
@@ -54,18 +41,31 @@ export const timerMachine = createMachine<TimerContext, TimerEvent, 'timer'>({
         PAUSE: 'paused',
         STOP: 'initial',
       },
-      after: {
-        ONE_SECOND: [
+      invoke: {
+        src: 'count1Second',
+        onDone: [
           {
             cond: 'isComplete',
             target: 'complete',
           },
           {
-            actions: 'decrement1Second',
+            actions: ['decrement1Second', 'tickEvent'],
             target: 'counting',
           },
         ],
       },
+      // after: {
+      //   ONE_SECOND: [
+      //     {
+      //       cond: 'isComplete',
+      //       target: 'complete',
+      //     },
+      //     {
+      //       actions: ['decrement1Second', 'tickEvent'],
+      //       target: 'counting',
+      //     },
+      //   ],
+      // },
     },
     paused: {
       on: {

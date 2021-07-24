@@ -1,5 +1,4 @@
 import { assign } from 'xstate';
-import { Partial2Deep } from '@shared/types';
 import merge from 'lodash.merge';
 import { AppOptions } from './appMachine';
 
@@ -11,7 +10,9 @@ const appOptionsDefaults: AppOptions = {
     incrementPomo: assign({
       completed: ({ completed }) => ({ ...completed, pomos: completed.pomos + 1 }),
     }),
-    startTimer: () => {},
+    runEndHooks: () => {},
+    runStartHooks: () => {},
+    runTickHook: () => {},
   },
   guards: {
     isTimeForLongBreak: ({ completed: { pomos }, breakNumber }) => breakNumber === pomos,
@@ -20,5 +21,7 @@ const appOptionsDefaults: AppOptions = {
   },
 };
 
-export const appOptions = (overrides?: Partial2Deep<AppOptions>): AppOptions =>
+type ActionOverrides = Pick<AppOptions['actions'], 'runEndHooks' | 'runStartHooks' | 'runTickHook'>;
+
+export const appOptions = (overrides: { actions?: ActionOverrides } = {}): AppOptions =>
   merge({}, appOptionsDefaults, overrides);

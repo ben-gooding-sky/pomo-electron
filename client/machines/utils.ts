@@ -25,7 +25,7 @@ export type MachineOptions<TContext, TEvent extends EventObject, Id extends stri
 export type MachineSend<
   TContext,
   TEvent extends EventObject,
-  Id extends string
+  Id extends 'app' | 'timer'
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 > = InterpreterWithMatches<TContext, any, TEvent, Id>['send'];
 

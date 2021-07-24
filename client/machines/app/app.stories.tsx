@@ -18,8 +18,6 @@ const appContext: AppContext = {
   ...defaultAppSettings,
 };
 
-type Dispatch = React.Dispatch<React.SetStateAction<TimerSend | undefined>>;
-
 const AppMachine: FC = () => {
   const [state, send] = useMachine(appMachine, {
     devTools: true,
@@ -27,27 +25,11 @@ const AppMachine: FC = () => {
     ...appOptions({
       actions: {
         runStartHooks: () => {
-          axios
-            .post(
-              'https://sky.slack.com/api/users.profile.set',
-              {
-                profile: {
-                  status_text: 'riding a train',
-                  status_emoji: ':mountain_railway:',
-                  status_expiration: new Date().getTime(),
-                },
-              },
-              {
-                headers: {
-                  authorization: 'Bearer 33',
-                },
-              }
-            )
-            .catch((err) => {
-              console.error(err);
-            });
+          console.log('start hook');
         },
-        runEndHooks: () => {},
+        runEndHooks: () => {
+          console.log('end hook');
+        },
       },
     }),
   });
