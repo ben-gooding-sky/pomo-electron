@@ -5,9 +5,9 @@ import { DeepPartial, UserConfig } from '@shared/types';
 import { getKeyPathsAndValues } from './getKeyPathsAndValues';
 
 export interface StoreRepository<T> {
-  storeRead(): Result<T>;
-  storeUpdate(value: DeepPartial<T>): Result<T>;
-  storeReset(): Result<T>;
+  storeRead(): Promise<Result<T>>;
+  storeUpdate(value: DeepPartial<T>): Promise<Result<T>>;
+  storeReset(): Promise<Result<T>>;
 }
 
 export interface StoreConfig<T> {
@@ -37,21 +37,21 @@ export const storeRepository = <T = UserConfig>(
 
   const store = new Store<T>(storeConfig);
   return {
-    storeRead() {
+    async storeRead() {
       logger.info('reading store', store.store);
-      return ok(store.store);
+      return Promise.resolve(ok(store.store));
     },
-    storeReset() {
+    async storeReset() {
       store.clear();
-      return ok(store.store);
+      return Promise.resolve(ok(store.store));
     },
-    storeUpdate(updatedStore) {
+    async storeUpdate(updatedStore) {
       const originalStore = store.store;
       try {
         getKeyPathsAndValues(updatedStore).forEach(([path, value]) => {
           store.set(path, value);
         });
-        return ok(store.store);
+        return Promise.resolve(ok(store.store));
       } catch (e: unknown) {
         logger.warn(
           `failed to update store "${name}", err:\n${
@@ -60,7 +60,7 @@ export const storeRepository = <T = UserConfig>(
           }`
         );
         store.set(originalStore);
-        return err('failed to update');
+        return Promise.resolve(err('failed to update'));
       }
     },
   };

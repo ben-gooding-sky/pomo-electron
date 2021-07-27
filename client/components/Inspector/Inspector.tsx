@@ -23,14 +23,14 @@ export const InspectorComponent: FC<IInspector> = ({ toggleable }) => {
   return (
     <>
       {toggleable && (
-        <button
+        <Button
           type="button"
           onClick={() => {
             setInspecting((x) => !x);
           }}
         >
           {inspecting ? 'hide inspector' : 'show inspector'}
-        </button>
+        </Button>
       )}
       <iframe
         id="xstate"

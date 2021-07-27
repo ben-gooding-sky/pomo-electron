@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { globalShortcut, Menu, nativeImage } from 'electron';
-import { Menubar, menubar } from 'menubar';
+import { globalShortcut, nativeImage } from 'electron';
+import { menubar } from 'menubar';
 import { isDev, isIntegration } from '@shared/constants';
 import url from 'url';
 import path from 'path';
@@ -13,13 +13,13 @@ checkForUpdates(logger);
 
 const mb = menubar({
   index: getPage(),
-  preloadWindow: true,
+  preloadWindow: false,
   browserWindow: {
-    backgroundColor: '#191622',
+    backgroundColor: '#2E3440',
     webPreferences: {
       nodeIntegration: true,
     },
-    alwaysOnTop: true,
+    ...(isDev && { alwaysOnTop: true }),
   },
   showDockIcon: false,
   // ...(isDev && { windowPosition: 'topLeft' }),

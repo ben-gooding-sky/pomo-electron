@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { DefaultTheme } from 'styled-components';
-import { IFont } from './styled';
+import { IFont, Palette } from './styled';
 
 const body: IFont = {
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
@@ -10,54 +10,31 @@ const body: IFont = {
   marginBottom: 2,
 };
 
+const nord: Palette = {
+  background: '#2E3440',
+  backgroundProminent: '#3B4252',
+  backgroundBright: '#434C5E',
+  backgroundBrightest: '#4C566A',
+  white: '#D8DEE9',
+  whiteBright: '#E5E9F0',
+  whiteBrightest: '#ECEFF4',
+  primary: '#8FBCBB',
+  bright: '#88C0D0',
+  secondary: '#81A1C1',
+  tertiary: '#5E81AC',
+  red: '#BF616A',
+  orange: '#D08770',
+  yellow: '#EBCB8B',
+  green: '#A3BE8C',
+  magenta: '#B48EAD',
+};
+
 export const theme: DefaultTheme = {
   theme: 'dark',
-  breakpoints: {
-    xs: 0,
-    sm: 600,
-    md: 960,
-    lg: 1280,
-  },
-  palette: {
-    white: '#E1E1E1',
-    grey: '#A2B8B4',
-    disabled: '#AAAAAA',
-    accent: '#379DCD',
-    background: '#222831',
-    red: '#EB5757',
-    green: '#6FCF97',
-    glass: 'rgba(39, 72, 80, 0.48)',
-    gradients: {
-      rainbow: () =>
-        `linear-gradient(91.71deg, rgba(236, 82, 119, 0.75) 2.59%, rgba(136, 126, 201, 0.75) 43.05%, rgba(48, 252, 204, 0.75) 95.08%)`,
-      secondary: `linear-gradient(91.71deg, rgba(15, 131, 104, 0.75) 2.59%, rgba(75, 58, 180, 0.75) 95.08%)`,
-      background: (deg = 70) => `linear-gradient(
-        ${deg}deg,
-        #000000 15.78%,
-        #243431 83.92%
-      )`,
-      masthead: (deg = 180) => `linear-gradient(
-        ${deg}deg,
-        rgb(66, 161, 139) 0%,
-        rgb(239, 214, 148) 100%
-      )`,
-      glassEdge: (deg = 150) => `linear-gradient(
-        ${deg}deg,
-        #FFFBFB 1.59%,
-        rgba(163, 204, 207, 0) 43.54%,
-        rgba(163, 204, 207, 0) 51.79%,
-        #429BA0 98.7%
-      )`,
-      vibrant: (deg = 180) => `linear-gradient(
-        ${deg}deg,
-        #FC77EE 0%,
-        #FC7777 100%
-      )`,
-    },
-  },
+  palette: nord,
   shadows: ['none'],
   shape: {
-    borderRadius: 20,
+    borderRadius: 3,
   },
   spacing: {
     xSmall: 4,
@@ -68,7 +45,6 @@ export const theme: DefaultTheme = {
   },
   typography: {
     body,
-    button: generateFontVariant(),
     caption: generateFontVariant({
       fontSize: '0.75rem',
       fontWeight: 400,

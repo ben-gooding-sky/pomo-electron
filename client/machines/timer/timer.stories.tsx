@@ -25,27 +25,27 @@ const TimerMachine: FC = () => {
   });
 
   return (
-    <div style={{ color: 'white' }}>
+    <div style={{ color: '#D8DEE9' }}>
       {state.value}
       {state.matches('initial') && (
-        <button type="button" onClick={() => send({ type: 'PLAY' })}>
+        <Button type="button" onClick={() => send({ type: 'PLAY' })}>
           start
-        </button>
+        </Button>
       )}
       {!state.matches('initial') && (
-        <button type="button" onClick={() => send({ type: 'STOP' })}>
+        <Button type="button" onClick={() => send({ type: 'STOP' })}>
           stop
-        </button>
+        </Button>
       )}
       {state.matches('counting') && (
-        <button type="button" onClick={() => send({ type: 'PAUSE' })}>
+        <Button type="button" onClick={() => send({ type: 'PAUSE' })}>
           pause
-        </button>
+        </Button>
       )}
       {state.matches('paused') && (
-        <button type="button" onClick={() => send({ type: 'PLAY' })}>
+        <Button type="button" onClick={() => send({ type: 'PLAY' })}>
           play
-        </button>
+        </Button>
       )}
       <div>
         mins: {state.context.timeLeft.mins}

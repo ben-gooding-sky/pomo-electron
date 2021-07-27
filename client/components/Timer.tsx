@@ -5,6 +5,7 @@ import { defaultTimerContext, timerMachine } from '@client/machines/timer/timerM
 import { merge } from '@shared/merge';
 import { isDev } from '@shared/constants';
 import { timerOptions } from '@client/machines/timer/timerOptions';
+import { Button } from '@client/components/Button';
 
 export const Timer: FC<{
   appSend: AppSend;
@@ -41,45 +42,56 @@ export const Timer: FC<{
     }
   );
 
+  const { mins, seconds } = state.context.timeLeft;
+
   return (
-    <div style={{ color: 'white' }}>
-      {title}
-      {state.matches('initial') && (
-        <button
-          type="button"
-          onClick={() => {
-            appSend({ type: 'START' });
-            send({ type: 'PLAY' });
-          }}
-        >
-          start
-        </button>
-      )}
-      {!state.matches('initial') && (
-        <button
-          type="button"
-          onClick={() => {
-            send({ type: 'STOP' });
-            appSend({ type: 'STOP' });
-          }}
-        >
-          stop
-        </button>
-      )}
-      {state.matches('counting') && (
-        <button type="button" onClick={() => send({ type: 'PAUSE' })}>
-          pause
-        </button>
-      )}
-      {state.matches('paused') && (
-        <button type="button" onClick={() => send({ type: 'PLAY' })}>
-          play
-        </button>
-      )}
-      <div>
-        mins: {state.context.timeLeft.mins}
-        seconds: {state.context.timeLeft.seconds}
-      </div>
+    <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
+      <p style={{ fontSize: 24 }}>{title}</p>
+      <p style={{ fontSize: 48 }}>
+        {mins}:{seconds >= 10 ? seconds : `0${seconds}`}
+      </p>
+      <ul style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+        {state.matches('initial') && (
+          <li>
+            <Button
+              type="button"
+              onClick={() => {
+                appSend({ type: 'START' });
+                send({ type: 'PLAY' });
+              }}
+            >
+              start
+            </Button>
+          </li>
+        )}
+        {!state.matches('initial') && (
+          <li>
+            <Button
+              type="button"
+              onClick={() => {
+                send({ type: 'STOP' });
+                appSend({ type: 'STOP' });
+              }}
+            >
+              stop
+            </Button>
+          </li>
+        )}
+        {state.matches('counting') && (
+          <li>
+            <Button type="button" onClick={() => send({ type: 'PAUSE' })}>
+              pause
+            </Button>
+          </li>
+        )}
+        {state.matches('paused') && (
+          <li>
+            <Button type="button" onClick={() => send({ type: 'PLAY' })}>
+              play
+            </Button>
+          </li>
+        )}
+      </ul>
     </div>
   );
 };

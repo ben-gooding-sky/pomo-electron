@@ -9,13 +9,14 @@ import { Timer } from '@client/components/Timer';
 import { UserConfig } from '@shared/types';
 
 export const PomodoroControl: FC<{ userConfig: UserConfig }> = ({ userConfig }) => {
-  const slackAuth: SlackAuth | null = userConfig
-    ? {
-        token: userConfig.slackToken,
-        dCookie: userConfig.slackDCookie,
-        dSCookie: userConfig.slackDSCookie,
-      }
-    : null;
+  const slackAuth: SlackAuth | null =
+    userConfig._tag === 'FullUserConfig'
+      ? {
+          token: userConfig.slackToken,
+          dCookie: userConfig.slackDCookie,
+          dSCookie: userConfig.slackDSCookie,
+        }
+      : null;
 
   const [state, send] = useMachine(appMachine, {
     devTools: isDev,
@@ -23,7 +24,7 @@ export const PomodoroControl: FC<{ userConfig: UserConfig }> = ({ userConfig }) 
     ...appOptions({
       actions: {
         runTickHook: (_, { timeLeft: { mins, seconds } }) => {
-          window.bridge.setTrayTitle(`${mins}:${seconds}`);
+          window.bridge.setTrayTitle(`${mins}:${seconds >= 10 ? seconds : `0${seconds}`}`);
 
           if (seconds === 0 && mins > 0) {
             const expiration = new Date();
@@ -83,7 +84,7 @@ export const PomodoroControl: FC<{ userConfig: UserConfig }> = ({ userConfig }) 
   } = state.context;
 
   return (
-    <div style={{ color: 'white' }}>
+    <div style={{ color: '#D8DEE9' }}>
       {state.matches('pomo') && (
         <Timer duration={pomo} appSend={send} title="pomodoro" autoStart={beforePomo} />
       )}

@@ -20,7 +20,7 @@ describe('Inspector', () => {
     return (
       <div>
         {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-        <button
+        <Button
           data-testid="test-button"
           type="button"
           onClick={() => {

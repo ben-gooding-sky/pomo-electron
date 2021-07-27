@@ -8,9 +8,32 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Lato, Helvetica, sans-serif;
     font-size: 16px;
-    color: #E1E1E6;
-    background-color: hotpink;
+  }
+  
+  p {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  li {
+    text-decoration: none;
+    list-style-type: none;
+    margin-bottom: 20px;
+  }
+  
+  input {
+    background: #4C566A;
+    border: thin solid #3B4252;
+    border-radius: 3px;
+    height: 2em;
+    color: #E5E9F0;
+    padding-left: 5px;
+  }
+  
+  svg {
+    max-height: 100%;
+    max-width: 100%;
   }
 `;

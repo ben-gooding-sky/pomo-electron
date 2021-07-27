@@ -15,13 +15,16 @@ export type IClientLogger = Pick<ILogger, 'error' | 'info'>;
 export type UserConfig = EmptyConfig | FullUserConfig;
 
 interface FullUserConfig {
+  _tag: 'FullUserConfig';
   slackToken: string;
   slackDCookie: string;
   slackDSCookie: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface EmptyConfig {}
+type EmptyConfig = typeof emptyConfig;
+export const emptyConfig = {
+  _tag: 'emptyConfig',
+} as const;
 
 /**
  * IpcBridge is a meta type to glue together the client and server through the bridge.

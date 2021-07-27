@@ -59,6 +59,7 @@ module.exports = {
         'plugin:prettier/recommended',
       ],
       rules: {
+        'no-underscore-dangle': 'off',
         '@typescript-eslint/no-floating-promises': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
         '@typescript-eslint/no-unused-params': 'off',
