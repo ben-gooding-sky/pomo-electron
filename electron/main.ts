@@ -16,6 +16,8 @@ const mb = menubar({
   preloadWindow: false,
   browserWindow: {
     backgroundColor: '#2E3440',
+    height: 300,
+    width: 300,
     webPreferences: {
       nodeIntegration: true,
     },

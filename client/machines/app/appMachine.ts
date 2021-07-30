@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createMachine, StateWithMatches } from '@xstate/compiled';
 
+import { UserConfig } from '@shared/types';
 import { TimerContext } from '../timer/timerMachine';
 import { MachineOptions, MachineSend } from '../utils';
 
@@ -10,16 +11,8 @@ export interface AppContext {
     longBreaks: number;
   };
   breakNumber: number;
-  timers: {
-    pomo: number;
-    shortBreak: number;
-    longBreak: number;
-  };
-  autoStart: {
-    beforeShortBreak: boolean;
-    beforeLongBreak: boolean;
-    beforePomo: boolean;
-  };
+  timers: UserConfig['timers'];
+  autoStart: UserConfig['autoStart'];
 }
 
 export const defaultAppSettings: AppContext = {

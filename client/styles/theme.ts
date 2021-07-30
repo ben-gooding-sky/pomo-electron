@@ -30,10 +30,10 @@ const nord: Palette = {
 };
 
 export const theme: DefaultTheme = {
+  shadows: [],
   theme: 'dark',
   palette: nord,
-  shadows: ['none'],
-  shape: {
+  special: {
     borderRadius: 3,
   },
   spacing: {
@@ -54,7 +54,7 @@ export const theme: DefaultTheme = {
       fontWeight: 300,
     }),
     h2: generateFontVariant({
-      fontSize: '1.6rem',
+      fontSize: '2.2rem',
       fontWeight: 700,
       marginBottom: 1.2,
     }),

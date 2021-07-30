@@ -45,10 +45,18 @@ export const Timer: FC<{
   const { mins, seconds } = state.context.timeLeft;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        textAlign: 'center',
+        justifyContent: 'space-between',
+        height: '175px',
+      }}
+    >
       <p style={{ fontSize: 24 }}>{title}</p>
       <p style={{ fontSize: 48 }}>
-        {mins}:{seconds >= 10 ? seconds : `0${seconds}`}
+        {mins} : {seconds >= 10 ? seconds : `0${seconds}`}
       </p>
       <ul style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
         {state.matches('initial') && (

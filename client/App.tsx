@@ -7,7 +7,7 @@ import { theme } from '@client/styles/theme';
 import { ErrorBoundary } from '@client/components/ErrorBoundary/ErrorBoundary';
 import { logger } from '@electron/services/logger';
 import { ConfigProvider } from '@client/components/useConfig';
-import { View } from '@client/View';
+import { PageManager } from '@client/components/PageManager';
 import { GlobalStyle } from './styles/GlobalStyle';
 
 const mainElement = document.createElement('div');
@@ -22,7 +22,7 @@ const App: FC = () => (
     <ErrorBoundary logger={logger}>
       <ThemeProvider theme={theme}>
         <ConfigProvider>
-          <View />
+          <PageManager />
         </ConfigProvider>
       </ThemeProvider>
     </ErrorBoundary>

@@ -12,19 +12,40 @@ export interface ILogger extends ElectronLog {
 
 export type IClientLogger = Pick<ILogger, 'error' | 'info'>;
 
-export type UserConfig = EmptyConfig | FullUserConfig;
+export const emptyConfig: UserConfig = {
+  timers: {
+    pomo: 25,
+    shortBreak: 5,
+    longBreak: 15,
+  },
+  autoStart: {
+    beforeShortBreak: true,
+    beforeLongBreak: true,
+    beforePomo: false,
+  },
+  slack: { enabled: false },
+};
 
-interface FullUserConfig {
-  _tag: 'FullUserConfig';
-  slackToken: string;
-  slackDCookie: string;
-  slackDSCookie: string;
+export interface UserConfig {
+  timers: {
+    pomo: number;
+    shortBreak: number;
+    longBreak: number;
+  };
+  autoStart: {
+    beforeShortBreak: boolean;
+    beforeLongBreak: boolean;
+    beforePomo: boolean;
+  };
+  slack:
+    | {
+        enabled: true;
+        slackToken: string;
+        slackDCookie: string;
+        slackDSCookie: string;
+      }
+    | { enabled: false };
 }
-
-type EmptyConfig = typeof emptyConfig;
-export const emptyConfig = {
-  _tag: 'emptyConfig',
-} as const;
 
 /**
  * IpcBridge is a meta type to glue together the client and server through the bridge.

@@ -77,7 +77,7 @@ declare module 'styled-components' {
     theme: 'dark' | 'light';
     palette: Palette;
     shadows: string[];
-    shape: {
+    special: {
       borderRadius: number;
     };
     spacing: {

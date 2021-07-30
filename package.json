@@ -95,6 +95,7 @@
     "menubar": "9.0.5",
     "react": "16.14.0",
     "react-dom": "16.14.0",
+    "react-hook-form": "7.12.1",
     "styled-components": "5.2.1",
     "xstate": "4.22.0",
     "xstate-codegen": "0.3.0"

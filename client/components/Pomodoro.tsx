@@ -1,26 +1,31 @@
-import { SlackAuth } from '@electron/repositories/slack/slack';
 import React, { FC } from 'react';
+import { useConfig } from '@client/components/useConfig';
+import { SlackAuth } from '@electron/repositories/slack/slack';
 import { useMachine } from '@client/machines';
 import { appMachine, defaultAppSettings } from '@client/machines/app/appMachine';
 import { isDev } from '@shared/constants';
 import { appOptions } from '@client/machines/app/appOptions';
 import { logger } from '@electron/services/logger';
 import { Timer } from '@client/components/Timer';
-import { UserConfig } from '@shared/types';
+import styled from 'styled-components';
 
-export const PomodoroControl: FC<{ userConfig: UserConfig }> = ({ userConfig }) => {
-  const slackAuth: SlackAuth | null =
-    userConfig._tag === 'FullUserConfig'
-      ? {
-          token: userConfig.slackToken,
-          dCookie: userConfig.slackDCookie,
-          dSCookie: userConfig.slackDSCookie,
-        }
-      : null;
+export const Pomodoro: FC = () => {
+  const { config } = useConfig();
+
+  const slackAuth: SlackAuth | null = config.slack.enabled
+    ? {
+        token: config.slack.slackToken,
+        dCookie: config.slack.slackDCookie,
+        dSCookie: config.slack.slackDSCookie,
+      }
+    : null;
 
   const [state, send] = useMachine(appMachine, {
     devTools: isDev,
-    context: defaultAppSettings,
+    context: {
+      ...defaultAppSettings,
+      timers: config.timers,
+    },
     ...appOptions({
       actions: {
         runTickHook: (_, { timeLeft: { mins, seconds } }) => {
@@ -84,7 +89,9 @@ export const PomodoroControl: FC<{ userConfig: UserConfig }> = ({ userConfig }) 
   } = state.context;
 
   return (
-    <div style={{ color: '#D8DEE9' }}>
+    <div
+      style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}
+    >
       {state.matches('pomo') && (
         <Timer duration={pomo} appSend={send} title="pomodoro" autoStart={beforePomo} />
       )}
