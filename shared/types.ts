@@ -97,3 +97,6 @@ export type DeepPartial<T> = {
 export interface AnyObject {
   [key: string]: any;
 }
+
+type CssSizeUnits = '%' | 'em' | 'px';
+export type CssSize = `${string}${CssSizeUnits}`;

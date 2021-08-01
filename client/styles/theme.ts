@@ -54,7 +54,7 @@ export const theme: DefaultTheme = {
       fontWeight: 300,
     }),
     h2: generateFontVariant({
-      fontSize: '2.2rem',
+      fontSize: '1.5rem',
       fontWeight: 700,
       marginBottom: 1.2,
     }),

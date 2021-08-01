@@ -1,18 +1,16 @@
 import { useContext } from 'react';
 import { Palette } from '@client/styles/styled';
 import { ThemeContext } from 'styled-components';
-
-type CssSize = '%' | 'em' | 'px';
-type Size = `${string}${CssSize}`;
+import { CssSize } from '@shared/types';
 
 export type SvgSize =
-  | { color: keyof Palette; size: Size }
-  | { color: keyof Palette; width: Size; height: Size };
+  | { color: keyof Palette; size: CssSize }
+  | { color: keyof Palette; width: CssSize; height: CssSize };
 
 interface IconProps {
   color: string;
-  width: Size;
-  height: Size;
+  width: CssSize;
+  height: CssSize;
 }
 
 export function useIcon(props: SvgSize): IconProps {

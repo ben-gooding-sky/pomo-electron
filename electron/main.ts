@@ -24,13 +24,16 @@ const mb = menubar({
     ...(isDev && { alwaysOnTop: true }),
   },
   showDockIcon: false,
-  // ...(isDev && { windowPosition: 'topLeft' }),
 });
 
 const repos = isIntegration ? fakeRepositories() : productionRepositories(mb);
 setupIpcHandlers(ipcMain, handlers(repos));
 
 const trayIcon = nativeImage.createFromPath('assets/IconTemplate.png');
+
+mb.on('after-create-window', () => {
+  mb.app.dock.hide();
+});
 
 mb.on('ready', () => {
   logger.info('app ready');

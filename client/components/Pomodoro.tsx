@@ -7,7 +7,6 @@ import { isDev } from '@shared/constants';
 import { appOptions } from '@client/machines/app/appOptions';
 import { logger } from '@electron/services/logger';
 import { Timer } from '@client/components/Timer';
-import styled from 'styled-components';
 
 export const Pomodoro: FC = () => {
   const { config } = useConfig();

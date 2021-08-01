@@ -51,7 +51,6 @@ export const Timer: FC<{
         flexDirection: 'column',
         textAlign: 'center',
         justifyContent: 'space-between',
-        height: '175px',
       }}
     >
       <p style={{ fontSize: 24 }}>{title}</p>
