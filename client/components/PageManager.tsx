@@ -5,6 +5,7 @@ import { Pomodoro } from '@client/components/Pomodoro';
 import { Settings } from '@client/components/Settings/Settings';
 import { Box } from '@client/components/Box';
 import { MenuButton } from '@client/components/MenuButton';
+import { useConfig } from '@client/components/useConfig';
 
 const Header = styled.div`
   display: grid;
@@ -15,8 +16,14 @@ const Header = styled.div`
 export type Pages = 'Pomodoro' | 'Settings';
 
 export const PageManager: FC = () => {
-  // const [page, navigatePageTo] = useState<Pages>('Pomodoro');
-  const [page, navigatePageTo] = useState<Pages>('Settings');
+  const [page, navigatePageTo] = useState<Pages>('Pomodoro');
+  const { loading, config } = useConfig();
+
+  if (loading) {
+    return <p>loading...</p>;
+  }
+
+  console.log('loaded with config', config);
 
   return (
     <Page>

@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { createMachine } from '@xstate/compiled';
+import { createMachine, StateWithMatches } from '@xstate/compiled';
 import { MachineOptions } from '../utils';
 
 export interface TimerContext {
@@ -19,6 +19,7 @@ export const defaultTimerContext: TimerContext = {
 
 type TimerEvent = { type: 'PAUSE' } | { type: 'PLAY' } | { type: 'STOP' };
 
+export type TimerState = StateWithMatches<TimerContext, TimerEvent, 'timer'>;
 export type TimerOptions = MachineOptions<TimerContext, TimerEvent, 'timer'>;
 
 export const timerMachine = createMachine<TimerContext, TimerEvent, 'timer'>({

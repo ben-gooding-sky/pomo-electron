@@ -46,7 +46,7 @@ export const Pomodoro: FC = () => {
         runStartHooks: () => {
           logger.info('start hooks called');
 
-          const duration = 25;
+          const duration = config.timers.pomo;
 
           const expiration = new Date();
           expiration.setMinutes(expiration.getMinutes() + duration);
@@ -57,7 +57,7 @@ export const Pomodoro: FC = () => {
             window.bridge.slackSetPresence(slackAuth, 'away');
             window.bridge.slackSetSnooze(slackAuth, duration);
             window.bridge.slackSetProfile(slackAuth, {
-              text: 'free in 25 mins',
+              text: `free in ${config.timers.pomo} mins`,
               emoji: ':tomato:',
               expiration,
             });
@@ -88,9 +88,7 @@ export const Pomodoro: FC = () => {
   } = state.context;
 
   return (
-    <div
-      style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}
-    >
+    <>
       {state.matches('pomo') && (
         <Timer duration={pomo} appSend={send} title="pomodoro" autoStart={beforePomo} />
       )}
@@ -98,8 +96,8 @@ export const Pomodoro: FC = () => {
         <Timer duration={shortBreak} appSend={send} title="break" autoStart={beforeShortBreak} />
       )}
       {state.matches('longBreak') && (
-        <Timer appSend={send} duration={longBreak} title="longBreak" autoStart={beforeLongBreak} />
+        <Timer appSend={send} duration={longBreak} title="long break" autoStart={beforeLongBreak} />
       )}
-    </div>
+    </>
   );
 };

@@ -1,4 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
 import React, { createContext, FC, useContext, useEffect, useState } from 'react';
 import { emptyConfig, UserConfig } from '@shared/types';
 import { logger } from '@electron/services/logger';
@@ -8,7 +7,9 @@ interface Config {
   config: UserConfig;
   storeUpdate: StoreRepository<UserConfig>['storeUpdate'];
   storeReset: StoreRepository<UserConfig>['storeReset'];
+  loading: boolean;
 }
+
 const configContext = createContext<Config>({
   config: emptyConfig,
   storeUpdate() {
@@ -17,27 +18,35 @@ const configContext = createContext<Config>({
   storeReset() {
     throw new Error('provider not initialised');
   },
+  loading: true,
 });
 
 const { Provider } = configContext;
 
-export const useConfig = () => useContext(configContext);
+export const useConfig = (): Config => useContext(configContext);
 
 export const ConfigProvider: FC<Partial<Config>> = (props) => {
   const [config, setConfig] = useState(props.config ?? emptyConfig);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    window.bridge.storeRead().then((data) => {
-      data.match({
-        Ok: setConfig,
-        Err: logger.error,
+    window.bridge
+      .storeRead()
+      .then((data) => {
+        data.match({
+          Ok: setConfig,
+          Err: logger.error,
+        });
+      })
+      .then(() => {
+        setLoading(false);
       });
-    });
   }, []);
 
   return (
     <Provider
       value={{
+        loading,
         config,
         async storeUpdate(data) {
           const res = await window.bridge.storeUpdate(data);
