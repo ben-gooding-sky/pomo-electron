@@ -16,14 +16,13 @@ const Header = styled.div`
 export type Pages = 'Pomodoro' | 'Settings';
 
 export const PageManager: FC = () => {
-  const [page, navigatePageTo] = useState<Pages>('Pomodoro');
-  const { loading, config } = useConfig();
+  // const [page, navigatePageTo] = useState<Pages>('Pomodoro');
+  const [page, navigatePageTo] = useState<Pages>('Settings');
+  const { loading } = useConfig();
 
   if (loading) {
     return <p>loading...</p>;
   }
-
-  console.log('loaded with config', config);
 
   return (
     <Page>

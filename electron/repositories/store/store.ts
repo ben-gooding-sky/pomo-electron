@@ -32,10 +32,11 @@ export const storeRepository = <T = UserConfig>(
 ): StoreRepository<T> => {
   const { name, cwd } = storeConfig;
 
-  /* istanbul ignore next */
-  logger.info(`setting up Store Repo: name ${name}${cwd ? `cwd ${cwd}` : ''}`);
+  // eslint-disable-next-line no-console
+  console.log(`setting up Store Repo: name ${name}${cwd ? `cwd ${cwd}` : ''}`);
 
   const store = new Store<T>(storeConfig);
+  console.log(store.path);
   return {
     async storeRead() {
       logger.info('reading store', store.store);
