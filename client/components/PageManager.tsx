@@ -16,8 +16,8 @@ const Header = styled.div`
 export type Pages = 'Pomodoro' | 'Settings';
 
 export const PageManager: FC = () => {
-  // const [page, navigatePageTo] = useState<Pages>('Pomodoro');
-  const [page, navigatePageTo] = useState<Pages>('Settings');
+  const [page, navigatePageTo] = useState<Pages>('Pomodoro');
+  // const [page, navigatePageTo] = useState<Pages>('Settings');
   const { loading } = useConfig();
 
   if (loading) {

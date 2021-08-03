@@ -7,7 +7,7 @@ import { isDev } from '@shared/constants';
 import { timerOptions } from '@client/machines/timer/timerOptions';
 // import { Button } from '@client/components/Button';
 import { Box } from '@client/components/Box';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { TimerProgress } from '@client/components/TimerProgress';
 
 const Button = styled.button`
@@ -18,6 +18,7 @@ const Button = styled.button`
   border-radius: 25px;
   background: none;
   outline: none;
+  cursor: pointer;
 
   &:focus {
     color: ${({ theme }) => theme.palette.background};
@@ -30,14 +31,19 @@ const Button = styled.button`
   }
 `;
 
+const StopButton = styled(Button)`
+  color: ${({ theme }) => theme.palette.yellow};
+  border: thin solid ${({ theme }) => theme.palette.yellow};
+`;
+
 const TimerGrid = styled.div`
   display: grid;
-  grid-template-columns: [left] 1fr [middle] 170px [right] 1fr;
-  grid-template-rows: [top] 40px [center] 90px [bottom] 40px [control] min-content;
+  grid-template-columns: [left] 1fr [middle] 160px [right] 1fr;
+  grid-template-rows: [top] 60px [center] 100px [bottom] 10px [control] min-content;
   grid-template-areas:
     '. timer .'
     '. timer .'
-    '. timer .'
+    '. gap .'
     '. controls .';
 `;
 
@@ -73,6 +79,7 @@ export const Timer: FC<{
   );
 
   const { mins, seconds } = state.context.timeLeft;
+  const theme = useTheme();
 
   return (
     <TimerGrid>
@@ -92,19 +99,14 @@ export const Timer: FC<{
           justifyContent: 'flex-end',
         }}
       >
-        <p
-          style={{
-            fontSize: 14,
-            textAlign: 'center',
-          }}
-        >
-          {title}
-        </p>
+        <p style={{ fontSize: 14, textAlign: 'center', color: theme.palette.bright }}>{title}</p>
       </Box>
       <Box
         style={{
           gridRow: 'center / bottom',
           gridColumn: 'middle / right',
+          justifyContent: 'flex-start',
+          paddingTop: '2px',
         }}
       >
         <p
@@ -135,7 +137,7 @@ export const Timer: FC<{
             </Button>
           )}
           {!state.matches('initial') && (
-            <Button
+            <StopButton
               type="button"
               onClick={() => {
                 send({ type: 'STOP' });
@@ -143,7 +145,7 @@ export const Timer: FC<{
               }}
             >
               stop
-            </Button>
+            </StopButton>
           )}
           {state.matches('counting') && (
             <Button type="button" onClick={() => send({ type: 'PAUSE' })}>

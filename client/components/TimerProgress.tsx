@@ -30,6 +30,14 @@ export function TimerProgress({
   return (
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <circle
+        cx={50}
+        cy={50}
+        r={radius}
+        stroke={theme.palette.backgroundProminent}
+        fill="none"
+        strokeWidth={stroke}
+      />
+      <circle
         style={{
           transform: 'rotate(-90deg)',
           transformOrigin: 'center',
@@ -39,7 +47,7 @@ export function TimerProgress({
         cx={50}
         cy={50}
         r={radius}
-        stroke={title === 'pomodoro' ? theme.palette.primary : theme.palette.green}
+        stroke={title === 'pomodoro' ? theme.palette.bright : theme.palette.green}
         fill="none"
         strokeWidth={stroke}
         strokeDasharray={circumference}
