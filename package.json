@@ -1,7 +1,7 @@
 {
-  "name": "pancake",
+  "name": "pomo",
   "version": "0.1.0",
-  "description": "A Pull Request Dashboard on your Desktop",
+  "description": "A simple pomodoro timer with 3rd party integrations",
   "main": "./build/main.js",
   "scripts": {
     "clean": "git clean -dfx && yarn install",
@@ -20,7 +20,7 @@
     "build:react": "webpack --config tooling/webpack/react.webpack.js --mode production",
     "dev:electron": "wait-on http-get://localhost:4000/ && cross-env NODE_ENV=development webpack --config tooling/webpack/electron.webpack.js --mode development && yarn start",
     "dev:react": "cross-env NODE_ENV=development webpack-dev-server --config tooling/webpack/react.webpack.js --mode development",
-    "checks": "FORCE_COLOR=1 npm-run-all --print-label --parallel lint test --serial build e2e",
+    "checks": "FORCE_COLOR=1 npm-run-all --print-label --parallel lint test --serial build",
     "prerelease": "npm-run-all clean checks",
     "release": "electron-builder --mac",
     "postinstall": "electron-builder install-app-deps"
@@ -121,7 +121,8 @@
     "files": [
       "package.json",
       "publishingTools/icon.*",
-      "build/**"
+      "build/**",
+      "assets/**"
     ]
   },
   "volta": {
