@@ -21,7 +21,6 @@
     "dev:electron": "wait-on http-get://localhost:4000/ && cross-env NODE_ENV=development webpack --config tooling/webpack/electron.webpack.js --mode development && yarn start",
     "dev:react": "cross-env NODE_ENV=development webpack-dev-server --config tooling/webpack/react.webpack.js --mode development",
     "checks": "FORCE_COLOR=1 npm-run-all --print-label --parallel lint test --serial build",
-    "prerelease": "npm-run-all clean checks",
     "release": "electron-builder --mac",
     "postinstall": "electron-builder install-app-deps"
   },
