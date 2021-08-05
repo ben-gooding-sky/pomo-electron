@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { globalShortcut, nativeImage } from 'electron';
 import { menubar } from 'menubar';
-import { isDev, isIntegration } from '@shared/constants';
+import { asset, isDev, isIntegration } from '@shared/constants';
 import url from 'url';
 import path from 'path';
 import { checkForUpdates, logger, setUpDevtools } from '@electron/services';
@@ -11,7 +11,10 @@ import { handlers, setupIpcHandlers } from '@electron/ipc';
 
 checkForUpdates(logger);
 
+const icon = asset('IconTemplate.png');
+
 const mb = menubar({
+  icon,
   index: getPage(),
   preloadWindow: false,
   browserWindow: {
@@ -29,7 +32,7 @@ const mb = menubar({
 const repos = isIntegration ? fakeRepositories() : productionRepositories(mb);
 setupIpcHandlers(ipcMain, handlers(repos));
 
-const trayIcon = nativeImage.createFromPath('assets/IconTemplate.png');
+const trayIcon = nativeImage.createFromPath(asset('IconTemplate.png'));
 
 mb.on('after-create-window', () => {
   mb.app.dock.hide();

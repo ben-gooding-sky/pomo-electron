@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 const { shared, server } = require('./alias');
 
 const rootPath = process.cwd();
@@ -44,6 +45,11 @@ const common = {
 
 module.exports = {
   ...common,
+  plugins: [
+    new CopyPlugin({
+      patterns: [{ from: path.join(rootPath, 'assets'), to: path.join(rootPath, 'build')}],
+    }),
+  ],
   entry: path.resolve(rootPath, 'electron', 'main.ts'),
   output: {
     path: path.resolve(rootPath, 'build'),

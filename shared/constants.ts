@@ -1,3 +1,4 @@
+import path from 'path';
 import type { Nodenv } from './asserts';
 import { assertValidNodenv } from './asserts';
 
@@ -45,3 +46,7 @@ function sanitiseNodenv(env?: string): Nodenv {
 }
 
 export const githubScopes = ['repo', 'read:org'];
+
+export function asset(fileName: string): string {
+  return path.join(__dirname, fileName);
+}

@@ -53,6 +53,7 @@
     "babel-loader": "8.2.2",
     "babel-plugin-styled-components": "1.13.2",
     "backstopjs": "5.1.0",
+    "copy-webpack-plugin": "6",
     "cross-env": "7.0.3",
     "electron": "11.3.0",
     "electron-builder": "22.7.0",
@@ -120,8 +121,7 @@
     "files": [
       "package.json",
       "publishingTools/icon.*",
-      "build/**",
-      "assets/**"
+      "build/**"
     ]
   },
   "volta": {

@@ -8,6 +8,7 @@ import { Menubar } from 'menubar';
 import { ok, Result } from '@shared/Result';
 import { fakeShell, shellRepository, ShellRepository } from './shell';
 import { fakeStoreRepoFactory, storeRepository, StoreRepository } from './store';
+import { asset } from '@shared/constants';
 
 interface IconRepo {
   setTrayIcon(state: 'active' | 'inactive'): void;
@@ -21,8 +22,8 @@ export type Repositories = IconRepo &
   SlackRepository &
   StoreRepository<UserConfig>;
 
-const trayIcon = nativeImage.createFromPath('assets/IconTemplate.png');
-const trayActiveIcon = nativeImage.createFromPath('assets/IconActiveTemplate.png');
+const trayIcon = nativeImage.createFromPath(asset('IconTemplate.png'));
+const trayActiveIcon = nativeImage.createFromPath(asset('IconActiveTemplate.png'));
 
 export const productionRepositories = (mb: Menubar): Repositories => ({
   async count1Second() {
