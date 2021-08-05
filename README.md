@@ -11,7 +11,12 @@ There are many small features to add and these are tracked on the [Roadmap](http
 
 Please [raise any bugs or request any features here](https://github.com/AHDesigns/pomo-electron/issues/new/choose).
 
-To use the app, head to the [Releases](https://github.com/AHDesigns/pomo-electron/releases) and grab the `.dmg` file. Download it and install it (macOS only at this time). Follow [these quick instructions to allow the app to run](https://github.com/AHDesigns/pomo-electron/wiki/Beta-Release)
+To use the app, head to the [Releases](https://github.com/AHDesigns/pomo-electron/releases) and grab the `.dmg` file (`assets` is a dropdown, see screenshot below, the `version` number may change, but you get the idea).
+
+Download it and install it (macOS only at this time). Follow [these quick instructions to allow the app to run](https://github.com/AHDesigns/pomo-electron/wiki/Beta-Release)
+
+![image](https://user-images.githubusercontent.com/10004500/128321790-3ff8d2e2-4e39-41f9-90d5-571b7af72605.png)
+
 
 Some plans are:
 electron based to run on OS in background, should support an api to be queried by editors, e.g
