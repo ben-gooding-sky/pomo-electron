@@ -7,7 +7,13 @@ Also turning off all electron safety settings so use at own risk.
 
 ## Usage
 
-pending...
+**🚧 Currently in Beta**
+
+There are many small features to add and these are tracked on the [Roadmap](https://github.com/AHDesigns/pomo-electron/projects/1)
+
+Please [raise any bugs or request any features here](https://github.com/AHDesigns/pomo-electron/issues/new/choose).
+
+To use the app, head to the [Releases](https://github.com/AHDesigns/pomo-electron/releases) and grab the `.dmg` file. Download it and install it (macOS only at this time). Follow [these quick instructions to allow the app to run](https://github.com/AHDesigns/pomo-electron/wiki/Beta-Release)
 
 Some plans are:
 electron based to run on OS in background, should support an api to be queried by editors, e.g
