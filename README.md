@@ -1,8 +1,6 @@
 # Pomo 🍅
 Simple Pomodoro timer
 
-Mainly building as a learning exercise to use [fp-ts](https://gcanti.github.io/fp-ts/)
-
 Also turning off all electron safety settings so use at own risk.
 
 ## Usage
