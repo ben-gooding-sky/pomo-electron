@@ -17,16 +17,16 @@ Download it and install it (macOS only at this time). Follow [these quick instru
 
 ![image](https://user-images.githubusercontent.com/10004500/128321790-3ff8d2e2-4e39-41f9-90d5-571b7af72605.png)
 
+### Slack Integration
+If you want to use the slack settings, you can go to the settings in the Pomo app, (the button at the top left takes you there), and then you’ll see a form to add the relevant credentials:
+- a slack token: go to https://my.slack.com/customize, open your browser devTools and copy what you get from typing `TS.boot_data.api_token`
+- a 'd' cookie: to get the cookies, you can go to slack in the browser (like any normal chat window, not the customise page) and grab the `d` and `d-s` cookies
+- a 'd-s' cookie: as above.
 
-Some plans are:
-electron based to run on OS in background, should support an api to be queried by editors, e.g
-- tmux
-- emacs
-- intelij
-
-could just write meta data to a file (e.g next end time, time left), or expose a REST api 
+![image](https://user-images.githubusercontent.com/10004500/128473497-ade85352-52f0-4546-a35c-33d3d0ed42bb.png)
 
 ## Contributing
+*Pomo is not yet ready for contribution, but once V1 is released, all contributions will be welcome, and the approach to making changes will be very clear*
 
 Pomo is an [electron](https://www.electronjs.org/) app built using:
 - [Typescript](https://www.typescriptlang.org/) throughout (with very strict settings)
