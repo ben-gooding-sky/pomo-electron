@@ -1,11 +1,12 @@
 import React, { FC, useState } from 'react';
 import { Page } from '@client/components/Page';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { Pomodoro } from '@client/components/Pomodoro';
 import { Settings } from '@client/components/Settings/Settings';
 import { Box } from '@client/components/Box';
 import { MenuButton } from '@client/components/MenuButton';
 import { useConfig } from '@client/components/useConfig';
+import pj from 'package.json';
 
 const Header = styled.div`
   display: grid;
@@ -19,6 +20,7 @@ export const PageManager: FC = () => {
   const [page, navigatePageTo] = useState<Pages>('Pomodoro');
   // const [page, navigatePageTo] = useState<Pages>('Settings');
   const { loading } = useConfig();
+  const theme = useTheme();
 
   if (loading) {
     return <p>loading...</p>;
@@ -36,6 +38,10 @@ export const PageManager: FC = () => {
         />
         <Box>
           <h2 style={{ textAlign: 'center' }}>{page === 'Settings' ? 'Settings' : 'Timer'}</h2>
+        </Box>
+        <Box>
+          <p style={{ color: theme.palette.backgroundBrightest }}>Beta</p>
+          <p style={{ color: theme.palette.backgroundBright }}>{pj.version}</p>
         </Box>
       </Header>
       <Box style={{ flexGrow: 1 }}>
